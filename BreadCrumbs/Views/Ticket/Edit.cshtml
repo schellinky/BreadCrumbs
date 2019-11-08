@@ -25,7 +25,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreatedByUser" class="control-label"></label>
-                <p>@Html.TextBoxFor(model => model.CreatedByUser, new { @readonly = "readonly" })</p>
+                @Html.HiddenFor(model => model.CreatedByUser)
+                <p>@Html.DisplayFor(model => model.CreatedByUser)</p>
                 <span asp-validation-for="CreatedByUser" class="text-danger"></span>
             </div>
             <div class="form-group">
