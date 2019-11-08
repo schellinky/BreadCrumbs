@@ -10,11 +10,17 @@ namespace BreadCrumbs.Models
     {
         [Display(Name = "Ticket ID")]
         public int id { get; set; }
+
         [Display(Name = "Title")]
         public String title { get; set; }
+
         [Display(Name = "Description")]
         public String description { get; set; }
+
         [Display(Name = "User")]
         public String user { get; set; }
+
+        [Display(Name = " Ticket Status")]
+        public int ticketStatus { get; set; }
     }
 }

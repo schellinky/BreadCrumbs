@@ -3,14 +3,16 @@ using BreadCrumbs.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BreadCrumbs.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    partial class TicketContextModelSnapshot : ModelSnapshot
+    [Migration("20191108144204_AddTicketStatus")]
+    partial class AddTicketStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

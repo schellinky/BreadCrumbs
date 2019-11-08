@@ -14,7 +14,8 @@ namespace BreadCrumbs.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(250)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(4000)", nullable: false),
-                    CreatedByUser = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    CreatedByUser = table.Column<int>(type: "int", nullable: false),
+                    TicketStatus = table.Column<int>(type: "int", nullable:false)
                 },
                 constraints: table =>
                 {

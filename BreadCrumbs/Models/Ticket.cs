@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace BreadCrumbs.Models
 {
+    public enum TicketStatus
+    {
+        [Display(Name = "New")]
+        New,
+        [Display(Name = "Closed")]
+        Closed,
+        [Display(Name = "In Progress")]
+        InProgress
+    }
+
     public class Ticket
     {
         [Key]
@@ -20,8 +30,12 @@ namespace BreadCrumbs.Models
         [Required]
         public string Description { get; set; }
 
-        [Column(TypeName = "nvarchar(100)")]
+        [Column(TypeName = "int")]
         [Required]
         public int CreatedByUser { get; set; }
+
+        [Column(TypeName = "int")]
+        [Required]
+        public TicketStatus TicketStatus { get; set; }
     }
 }
