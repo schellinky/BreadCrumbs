@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace BreadCrumbs.Models
 {
@@ -28,6 +30,7 @@ namespace BreadCrumbs.Models
 
         [Column(TypeName = "nvarchar(4000)")]
         [Required]
+        [AllowHtml]
         public string Description { get; set; }
 
         [Column(TypeName = "int")]

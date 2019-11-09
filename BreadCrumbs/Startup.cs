@@ -6,6 +6,7 @@ using BreadCrumbs.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ namespace BreadCrumbs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.AddMvc();
             services.AddDbContext<TicketContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
         }
@@ -49,7 +50,15 @@ namespace BreadCrumbs
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
 
             app.UseEndpoints(endpoints =>
             {

@@ -6,8 +6,8 @@
     <title>@ViewData["Title"] - BreadCrumbs</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
 
- 
 
 </head>
 <body>
@@ -28,9 +28,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>
+        <partial name="_CookieConsentPartial" />
     </header>
     <div class="container">
         <main role="main" class="pb-3">
