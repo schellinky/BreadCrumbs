@@ -1,14 +1,35 @@
 ﻿@model IEnumerable<BreadCrumbs.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tickets";
 }
 
-<h1>Index</h1>
+<h1>Tickets</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<table class="table-borderless"  width="107.25%">
+    <thead>
+        <tr>
+            <th valign="bottom">
+                <form asp-action="Index" method="get">
+                    <div class="form-actions no-color">
+                        <p>
+                            Find by title/description:
+                            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                            <input type="submit" value="Search" class="btn btn-secondary" /> |
+                            <a asp-action="Index">Back to Full List</a>
+                        </p>
+                    </div>
+                </form>
+            </th>
+            <th valign="top" align="right">
+                <a class="btn btn-primary" asp-action="Create">Create New</a>
+            </th>
+        </tr>
+    </thead>
+       
+</table>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -19,35 +40,36 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedByUser)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["UserSortParm"]">@Html.DisplayNameFor(model => model.CreatedByUser)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketStatus)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]">@Html.DisplayNameFor(model => model.TicketStatus)</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedByUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedByUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketStatus)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

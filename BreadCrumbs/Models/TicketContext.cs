@@ -13,6 +13,6 @@ namespace BreadCrumbs.Models
 
         }
 
-        public DbSet<Ticket> tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

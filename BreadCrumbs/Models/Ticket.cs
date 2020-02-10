@@ -13,10 +13,11 @@ namespace BreadCrumbs.Models
     {
         [Display(Name = "New")]
         New,
-        [Display(Name = "Closed")]
-        Closed,
         [Display(Name = "In Progress")]
-        InProgress
+        InProgress,
+        [Display(Name = "Closed")]
+        Closed
+        
     }
 
     public class Ticket

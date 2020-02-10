@@ -19,9 +19,35 @@ namespace BreadCrumbs.Controllers
         }
 
         // GET: Ticket
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.tickets.ToListAsync());
+            ViewData["UserSortParm"] = String.IsNullOrEmpty(sortOrder) ? "user_desc" : "";
+            ViewData["StatusSortParm"] = sortOrder == "Status" ? "status_desc" : "Status";
+            ViewData["CurrentFilter"] = searchString;
+            var tickets = from t in _context.Tickets
+                           select t;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tickets = tickets.Where(s => s.Title.Contains(searchString)
+                                       || s.Description.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "user_desc":
+                    tickets = tickets.OrderByDescending(t => t.CreatedByUser);
+                    break;
+                case "Status":
+                    tickets = tickets.OrderBy(t => t.TicketStatus);
+                    break;
+                case "status_desc":
+                    tickets = tickets.OrderByDescending(t => t.TicketStatus);
+                    break;
+                default:
+                    tickets = tickets.OrderByDescending(t => t.TicketId);
+                    break;
+
+            }
+            return View(await tickets.AsNoTracking().ToListAsync().ConfigureAwait(true));
         }
 
         // GET: Ticket/Details/5
@@ -32,7 +58,7 @@ namespace BreadCrumbs.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.tickets
+            var ticket = await _context.Tickets
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
             {
@@ -72,7 +98,7 @@ namespace BreadCrumbs.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.tickets.FindAsync(id);
+            var ticket = await _context.Tickets.FindAsync(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -123,7 +149,7 @@ namespace BreadCrumbs.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.tickets
+            var ticket = await _context.Tickets
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
             {
@@ -138,15 +164,15 @@ namespace BreadCrumbs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _context.tickets.FindAsync(id);
-            _context.tickets.Remove(ticket);
+            var ticket = await _context.Tickets.FindAsync(id);
+            _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(int id)
         {
-            return _context.tickets.Any(e => e.TicketId == id);
+            return _context.Tickets.Any(e => e.TicketId == id);
         }
     }
 }
