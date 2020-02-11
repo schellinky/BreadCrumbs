@@ -34,10 +34,12 @@ namespace BreadCrumbs.Models
         [AllowHtml]
         public string Description { get; set; }
 
+        [Display(Name = "Created By User")]
         [Column(TypeName = "int")]
         [Required]
         public int CreatedByUser { get; set; }
-
+          
+        [Display(Name = "Ticket Status")]
         [Column(TypeName = "int")]
         [Required]
         public TicketStatus TicketStatus { get; set; }

@@ -6,7 +6,7 @@
 
 <h1>Tickets</h1>
 
-<table class="table-borderless"  width="107.25%">
+<table class="table-borderless" width="107.25%">
     <thead>
         <tr>
             <th valign="bottom">
@@ -33,19 +33,19 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="15%">
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th width="15%">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["UserSortParm"]">@Html.DisplayNameFor(model => model.CreatedByUser)</a>
             </th>
-            <th>
+            <th width="15%">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]">@Html.DisplayNameFor(model => model.TicketStatus)</a>
             </th>
-            <th></th>
+            <th width="15.5%"></th>
         </tr>
     </thead>
     <tbody>
