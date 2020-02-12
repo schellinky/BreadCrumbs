@@ -1,4 +1,9 @@
-﻿@model BreadCrumbs.Models.Ticket
+﻿@using Microsoft.AspNetCore.Identity
+@using BreadCrumbs.Areas.Identity.Data
+
+@model BreadCrumbs.Models.Ticket
+@inject SignInManager<BreadCrumbsUser> SignInManager
+@inject UserManager<BreadCrumbsUser> UserManager
 
 @{
     ViewData["Title"] = "Create";
@@ -13,22 +18,23 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control"/>
+                <label style="font-size:20px; font:bold" asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label style="font-size:20px; font:bold" asp-for="Description" class="control-label"></label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control editorHtml" })
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedByUser" class="control-label"></label>
-                <input asp-for="CreatedByUser" class="form-control"/>
+                <label style="font-size:20px; font:bold" asp-for="CreatedByUser" class="control-label"></label>
+                @Html.Hidden("CreatedByUser", @UserManager.GetUserName(User))
+                <p>@UserManager.GetUserName(User)</p>
                 <span asp-validation-for="CreatedByUser" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TicketStatus" class="control-label"></label>
+                <label style="font-size:20px; font:bold" asp-for="TicketStatus" class="control-label"></label>
                 <select asp-for="TicketStatus" class="form-control" asp-items="@Html.GetEnumSelectList<TicketStatus>()"></select>
                 <span asp-validation-for="TicketStatus" class="text-danger"></span>
             </div>

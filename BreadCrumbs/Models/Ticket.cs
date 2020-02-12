@@ -35,9 +35,9 @@ namespace BreadCrumbs.Models
         public string Description { get; set; }
 
         [Display(Name = "Created By User")]
-        [Column(TypeName = "int")]
+        [Column(TypeName = "nvarchar(250)")]
         [Required]
-        public int CreatedByUser { get; set; }
+        public string CreatedByUser { get; set; }
           
         [Display(Name = "Ticket Status")]
         [Column(TypeName = "int")]
