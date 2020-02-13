@@ -1,4 +1,8 @@
-﻿@model IEnumerable<BreadCrumbs.Models.Ticket>
+﻿@using Microsoft.AspNetCore.Identity
+@using BreadCrumbs.Areas.Identity.Data
+
+@model IEnumerable<BreadCrumbs.Models.Ticket>
+@inject SignInManager<BreadCrumbsUser>  signInManager;
 
 @{
     ViewData["Title"] = "Tickets";
@@ -26,7 +30,7 @@
             </th>
         </tr>
     </thead>
-       
+
 </table>
 
 
@@ -67,7 +71,10 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
+                    }
                 </td>
             </tr>
         }

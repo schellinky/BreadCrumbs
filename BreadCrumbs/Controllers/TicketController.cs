@@ -144,6 +144,7 @@ namespace BreadCrumbs.Controllers
         }
 
         // GET: Ticket/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
