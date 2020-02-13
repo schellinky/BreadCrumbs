@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BreadCrumbs.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
