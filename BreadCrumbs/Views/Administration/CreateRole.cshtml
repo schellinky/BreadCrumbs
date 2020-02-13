@@ -1,0 +1,26 @@
+﻿@model CreateRoleViewModel
+@{
+    ViewData["Title"] = "Create New Role";
+}
+
+<h1>Create</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>New Role</h4>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label style="font-size:20px; font:bold" asp-for="RoleName"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Role</button> |
+            <a asp-action="ListRoles">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

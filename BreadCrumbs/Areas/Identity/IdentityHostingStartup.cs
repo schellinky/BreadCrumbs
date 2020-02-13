@@ -20,7 +20,7 @@ namespace BreadCrumbs.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
-                services.AddDefaultIdentity<BreadCrumbsUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<BreadCrumbsUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<IdentityContext>();
             });
         }

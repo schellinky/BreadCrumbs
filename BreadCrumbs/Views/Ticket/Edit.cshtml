@@ -14,35 +14,32 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TicketId" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label style="font-size:20px; font:bold" asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label style="font-size:20px; font:bold"asp-for="Description" class="control-label"></label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control editorHtml" })
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedByUser" class="control-label"></label>
+                <label style="font-size:20px; font:bold" asp-for="CreatedByUser" class="control-label"></label>
                 @Html.HiddenFor(model => model.CreatedByUser)
                 <p>@Html.DisplayFor(model => model.CreatedByUser)</p>
                 <span asp-validation-for="CreatedByUser" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TicketStatus" class="control-label"></label>
+                <label style="font-size:20px; font:bold"asp-for="TicketStatus" class="control-label"></label>
                 <select asp-for="TicketStatus" class="form-control" asp-items="@Html.GetEnumSelectList<TicketStatus>()"></select>
                 <span asp-validation-for="TicketStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a asp-action="Index">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

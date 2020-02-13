@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BreadCrumbs.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BreadCrumbs.Controllers
 {
+    [Authorize]
     public class TicketController : Controller
     {
         private readonly TicketContext _context;
