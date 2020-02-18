@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BreadCrumbs.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using BreadCrumbs.Areas.Identity.Data;
 
 namespace BreadCrumbs.Controllers
 {
@@ -14,10 +16,14 @@ namespace BreadCrumbs.Controllers
     public class TicketController : Controller
     {
         private readonly TicketContext _context;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<BreadCrumbsUser> userManager;
 
-        public TicketController(TicketContext context)
+        public TicketController(TicketContext context, RoleManager<IdentityRole> roleManager, UserManager<BreadCrumbsUser> userManager)
         {
             _context = context;
+            this.roleManager = roleManager;
+            this.userManager = userManager;
         }
 
         // GET: Ticket
@@ -60,14 +66,54 @@ namespace BreadCrumbs.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.TicketId == id);
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(m => m.TicketId == id);
+
+            var role = await roleManager.FindByNameAsync("Ticket #" + id);
+
             if (ticket == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            if (role == null)
+            {
+                var ticketRoleName = "Ticket #" + ticket.TicketId;
+
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = ticketRoleName
+                };
+
+                await roleManager.CreateAsync(identityRole);
+
+                var user = await userManager.FindByNameAsync(ticket.CreatedByUser);
+
+                await userManager.AddToRoleAsync(user, ticketRoleName);
+
+                role = await roleManager.FindByNameAsync("Ticket #" + id);
+            }
+
+            var editRoleViewModel = new EditRoleViewModel
+            {
+                Id = role.Id,
+                RoleName = role.Name
+            };
+
+            foreach (var user in userManager.Users)
+            {
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    editRoleViewModel.Users.Add(user.UserName);
+                }
+            }
+
+            var model = new TicketDetailViewModel
+            {
+                Ticket = ticket,
+                EditRoleViewModel = editRoleViewModel
+            };
+
+            return View(model);
         }
 
         // GET: Ticket/Create
@@ -87,6 +133,20 @@ namespace BreadCrumbs.Controllers
             {
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
+
+                var ticketRoleName = "Ticket #" + ticket.TicketId;
+
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = ticketRoleName
+                };
+
+                await roleManager.CreateAsync(identityRole);
+
+                var user = await userManager.FindByNameAsync(ticket.CreatedByUser);
+
+                await userManager.AddToRoleAsync(user, ticketRoleName);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
@@ -101,11 +161,53 @@ namespace BreadCrumbs.Controllers
             }
 
             var ticket = await _context.Tickets.FindAsync(id);
+
+            var role = await roleManager.FindByNameAsync("Ticket #" + id);
+
             if (ticket == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+
+            if (role == null)
+            {
+                var ticketRoleName = "Ticket #" + ticket.TicketId;
+
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = ticketRoleName
+                };
+
+                await roleManager.CreateAsync(identityRole);
+
+                var user = await userManager.FindByNameAsync(ticket.CreatedByUser);
+
+                await userManager.AddToRoleAsync(user, ticketRoleName);
+
+                role = await roleManager.FindByNameAsync("Ticket #" + id);
+            }
+
+            var editRoleViewModel = new EditRoleViewModel
+            {
+                Id = role.Id,
+                RoleName = role.Name
+            };
+
+            foreach (var user in userManager.Users)
+            {
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    editRoleViewModel.Users.Add(user.UserName);
+                }
+            }
+
+            var model = new TicketDetailViewModel
+            {
+                Ticket = ticket,
+                EditRoleViewModel = editRoleViewModel
+            };
+
+            return View(model);
         }
 
         // POST: Ticket/Edit/5
@@ -152,8 +254,8 @@ namespace BreadCrumbs.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.TicketId == id);
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(m => m.TicketId == id);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -176,6 +278,87 @@ namespace BreadCrumbs.Controllers
         private bool TicketExists(int id)
         {
             return _context.Tickets.Any(e => e.TicketId == id);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTicketMember(string roleId, int ticketId)
+        {
+            ViewBag.roleId = roleId;
+
+            ViewBag.ticketId = ticketId;
+
+            var role = await roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found.";
+                return View("Error");
+            }
+
+            var model = new List<UserRoleViewModel>();
+
+            foreach (var user in userManager.Users)
+            {
+                var userRoleViewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRoleViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRoleViewModel.IsSelected = false;
+                }
+
+                model.Add(userRoleViewModel);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTicketMember(List<UserRoleViewModel> model, string roleId, int ticketId)
+        {
+            var role = await roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found.";
+                return View("Error");
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                var user = await userManager.FindByIdAsync(model[i].UserId);
+
+                IdentityResult result = null;
+
+                if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
+                {
+                    result = await userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (result.Succeeded)
+                {
+                    if (i < (model.Count - 1))
+                        continue;
+                    else
+                        return RedirectToAction("Edit", new { Id = ticketId });
+                }
+
+            }
+            return RedirectToAction("Edit", new { Id = ticketId });
         }
     }
 }

@@ -43,5 +43,6 @@ namespace BreadCrumbs.Models
         [Column(TypeName = "int")]
         [Required]
         public TicketStatus TicketStatus { get; set; }
+
     }
 }

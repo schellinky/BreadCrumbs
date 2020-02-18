@@ -1,4 +1,4 @@
-﻿@model BreadCrumbs.Models.Ticket
+﻿@model BreadCrumbs.Models.TicketDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,33 +10,52 @@
     <h4>Ticket</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.Title)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.Title)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.Description)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByUser)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.CreatedByUser)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByUser)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.CreatedByUser)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketStatus)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ticket.TicketStatus)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketStatus)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ticket.TicketStatus)
         </dd>
     </dl>
 </div>
+<div class="card">
+    <div class="card-header">
+        <h3>Users assigned to this ticket</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.EditRoleViewModel.Users.Any())
+        {
+            foreach (var user in Model.EditRoleViewModel.Users)
+            {
+                <h5 class="card-title">@user</h5>
+            }
+        }
+        else
+        {
+            <h5 class="card-title">None</h5>
+        }
+    </div>
+</div>
+<p></p>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.TicketId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Ticket.TicketId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -1,4 +1,4 @@
-﻿@model BreadCrumbs.Models.Ticket
+﻿@model BreadCrumbs.Models.TicketDetailViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,33 +12,55 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="TicketId" />
+            <input type="hidden" asp-for="Ticket.TicketId" />
             <div class="form-group">
-                <label style="font-size:20px; font:bold" asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label style="font-size:20px; font:bold" asp-for="Ticket.Title" class="control-label"></label>
+                <input asp-for="Ticket.Title" class="form-control" />
+                <span asp-validation-for="Ticket.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label style="font-size:20px; font:bold"asp-for="Description" class="control-label"></label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control editorHtml" })
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label style="font-size:20px; font:bold"asp-for="Ticket.Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Ticket.Description, new { @class = "form-control editorHtml" })
+                <span asp-validation-for="Ticket.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label style="font-size:20px; font:bold" asp-for="CreatedByUser" class="control-label"></label>
-                @Html.HiddenFor(model => model.CreatedByUser)
-                <p>@Html.DisplayFor(model => model.CreatedByUser)</p>
-                <span asp-validation-for="CreatedByUser" class="text-danger"></span>
+                <label style="font-size:20px; font:bold" asp-for="Ticket.CreatedByUser" class="control-label"></label>
+                @Html.HiddenFor(model => model.Ticket.CreatedByUser)
+                <p>@Html.DisplayFor(model => model.Ticket.CreatedByUser)</p>
+                <span asp-validation-for="Ticket.CreatedByUser" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label style="font-size:20px; font:bold"asp-for="TicketStatus" class="control-label"></label>
-                <select asp-for="TicketStatus" class="form-control" asp-items="@Html.GetEnumSelectList<TicketStatus>()"></select>
-                <span asp-validation-for="TicketStatus" class="text-danger"></span>
+                <label style="font-size:20px; font:bold"asp-for="Ticket.TicketStatus" class="control-label"></label>
+                <select asp-for="Ticket.TicketStatus" class="form-control" asp-items="@Html.GetEnumSelectList<TicketStatus>()"></select>
+                <span asp-validation-for="Ticket.TicketStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" /> |
                 <a asp-action="Index">Back to List</a>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Users assigned to this ticket</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.EditRoleViewModel.Users.Any())
+        {
+            foreach (var user in Model.EditRoleViewModel.Users)
+            {
+                <h5 class="card-title">@user</h5>
+            }
+        }
+        else
+        {
+            <h5 class="card-title">None</h5>
+        }
+    </div>
+    <div class="card-footer">
+        <a asp-action="EditTicketMember" asp-controller="Ticket" asp-route-roleId="@Model.EditRoleViewModel.Id" asp-route-ticketId="@Model.Ticket.TicketId" class="btn btn-primary">Add or Remove Users</a>
     </div>
 </div>
 
