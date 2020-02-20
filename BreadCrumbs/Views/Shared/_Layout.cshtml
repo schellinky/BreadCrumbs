@@ -35,6 +35,15 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles" style="font-size: 20px;">Manage Roles</a>
                             </li>
                         }
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Index" style="font-size: 20px;">View All Tickets</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="UserTickets" style="font-size: 20px;">View My Tickets</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy" style="font-size: 20px;">Privacy</a>
                         </li>

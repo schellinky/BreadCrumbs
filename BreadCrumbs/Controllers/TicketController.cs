@@ -58,6 +58,37 @@ namespace BreadCrumbs.Controllers
             return View(await tickets.AsNoTracking().ToListAsync().ConfigureAwait(true));
         }
 
+        public async Task<IActionResult> UserTickets(string sortOrder, string searchString)
+        {
+            ViewData["UserSortParm"] = String.IsNullOrEmpty(sortOrder) ? "user_desc" : "";
+            ViewData["StatusSortParm"] = sortOrder == "Status" ? "status_desc" : "Status";
+            ViewData["CurrentFilter"] = searchString;
+            var tickets = from t in _context.Tickets
+                          select t;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tickets = tickets.Where(s => s.Title.Contains(searchString)
+                                       || s.Description.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "user_desc":
+                    tickets = tickets.OrderByDescending(t => t.CreatedByUser);
+                    break;
+                case "Status":
+                    tickets = tickets.OrderBy(t => t.TicketStatus);
+                    break;
+                case "status_desc":
+                    tickets = tickets.OrderByDescending(t => t.TicketStatus);
+                    break;
+                default:
+                    tickets = tickets.OrderByDescending(t => t.TicketId);
+                    break;
+
+            }
+            return View(await tickets.AsNoTracking().ToListAsync().ConfigureAwait(true));
+        }
+
         // GET: Ticket/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -270,6 +301,14 @@ namespace BreadCrumbs.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
+
+            var role = await roleManager.FindByNameAsync("Ticket #" + id);
+
+            if (role != null)
+            {
+                await roleManager.DeleteAsync(role);
+            }
+
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
