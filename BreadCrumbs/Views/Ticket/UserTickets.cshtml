@@ -19,15 +19,14 @@
                         <p>
                             Find by title/description:
                             <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-                            <i class="fas fa-search"></i>
-                            <input type="submit" value="Search" class="btn btn-secondary" /> |
+                            <button type="submit" class="btn btn-dark" style="font-family:'Times New Roman', Times, serif"><i class="fas fa-search">   Search</i></button> |
                             <a asp-action="Index">Back to Full List</a>
                         </p>
                     </div>
                 </form>
             </th>
             <th valign="top" align="right">
-                <a class="btn btn-primary" asp-action="Create">Create New</a>
+                <a class="btn btn-primary" asp-action="Create" style="font-family:'Times New Roman', Times, serif"><i class="fas fa-plus">   Create New</i></a>
             </th>
         </tr>
     </thead>
