@@ -12,55 +12,67 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
-
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 30px;">BreadCrumbs</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+        <header style="padding: 40px">
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 30px; color: white">
+                    <i class="fas fa-bread-slice"></i>
+                    BreadCrumbs
+                </a>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 20px;">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 20px; color: white">
+                                <i class="fas fa-home"></i>
+                                Home
+                            </a>
                         </li>
-                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles" style="font-size: 20px;">Manage Roles</a>
-                            </li>
-                        }
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Index" style="font-size: 20px;">View All Tickets</a>
+                                <a class="nav-link" asp-area="" asp-controller="Ticket" asp-action="Index" style="font-size: 20px; color: white">
+                                    <i class="far fa-copy"></i>
+                                    View All Tickets
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="UserTickets" style="font-size: 20px;">View My Tickets</a>
+                                <a class="nav-link" asp-area="" asp-controller="Ticket" asp-action="UserTickets" style="font-size: 20px; color: white">
+                                    <i class="far fa-file"></i>
+                                    View My Tickets
+                                </a>
+                            </li>
+                        }
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="ListRoles" style="font-size: 20px; color: white">
+                                    <i class="fas fa-users"></i>
+                                    Manage Roles
+                                </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy" style="font-size: 20px;">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="font-size: 20px; color: white">
+                                <i class="fas fa-info-circle"></i>
+                                Privacy
+                            </a>
                         </li>
                     </ul>
                 </div>
                 <partial name="_LoginPartial" />
-            </div>
-        </nav>
-        <partial name="_CookieConsentPartial" />
-    </header>
+            </nav>
+            <partial name="_CookieConsentPartial" />
+        </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="text-align: center; margin-left: auto; margin-right: auto">
         <div class="container">
             &copy; 2019 - BreadCrumbs - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
