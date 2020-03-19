@@ -34,6 +34,7 @@ namespace BreadCrumbs
 
             services.AddDbContext<TicketContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+            
 
         }
 
