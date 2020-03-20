@@ -15,11 +15,14 @@ using Microsoft.AspNetCore.Identity;
 using BreadCrumbs.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
 
 namespace BreadCrumbs
 {
     public class Startup
     {
+        private string _connection = null;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,9 +35,32 @@ namespace BreadCrumbs
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<TicketContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
-            
+            /*services.AddDbContext<TicketContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));*/
+
+            var builder = new SqlConnectionStringBuilder(
+                Configuration.GetConnectionString("DevConnection"));
+            builder.Password = Configuration["DbPassword"];
+            _connection = builder.ConnectionString;
+            services.AddDbContext<TicketContext>(options => options.UseSqlServer(_connection));
+
+
+
+
+
+
+            /*var builder1 = new SqlConnectionStringBuilder(
+                Configuration.GetConnectionString("IdentityContextConnection"));
+            builder1.Password = Configuration["DbPassword"];
+            _connection = builder1.ConnectionString;*/
+            /*
+            services.AddDbContext<IdentityContext>(options =>
+            options.UseSqlServer(_connection));*/
+
+            /*services.AddDbContextPool<TicketContext>(
+                options => options.UseSqlServer(_connection));*/
+            /*services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>();*/
 
         }
 
@@ -51,6 +77,7 @@ namespace BreadCrumbs
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
